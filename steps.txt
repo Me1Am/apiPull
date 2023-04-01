@@ -1,0 +1,8 @@
+Pull 1: Get teams in event
+Pull 2: Gets first team latest event
+Pull 3: Gets latest even data
+
+Check for unfilled teams
+	Pull 4: Get first unfilled team latest event
+	Pull 5: Get latest event data
+	Repeat until finished

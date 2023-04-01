@@ -1,0 +1,112 @@
+{
+  "playoff": {
+    "activation_bonus_rp": [
+      0,
+      28,
+      0.0
+    ],
+    "auto_docked_count": [
+      25,
+      28,
+      89.28571428571429
+    ],
+    "auto_engaged_count": [
+      22,
+      28,
+      78.57142857142857
+    ],
+    "average_charge_station_points_auto": 10.285714285714286,
+    "average_charge_station_points_teleop": 22.428571428571427,
+    "average_foul_score": 2.3214285714285716,
+    "average_link_points": 8.392857142857142,
+    "average_mobility_points": 5.571428571428571,
+    "average_park_points": 0.7142857142857143,
+    "average_piece_points_auto": 11.535714285714286,
+    "average_piece_points_teleop": 26.75,
+    "average_points_auto": 27.392857142857142,
+    "average_points_teleop": 49.892857142857146,
+    "average_score": 96.17857142857143,
+    "average_win_margin": 26.785714285714285,
+    "average_win_score": 109.57142857142857,
+    "coopertition": [
+      0,
+      28,
+      0.0
+    ],
+    "high_score": [
+      147,
+      "2023mdbet_sf13m1",
+      "SF13-1"
+    ],
+    "mobility_count": [
+      52,
+      84,
+      61.904761904761905
+    ],
+    "sustainability_bonus_rp": [
+      0,
+      28,
+      0.0
+    ],
+    "unicorn_matches": [
+      0,
+      28,
+      0.0
+    ]
+  },
+  "qual": {
+    "activation_bonus_rp": [
+      63,
+      144,
+      43.75
+    ],
+    "auto_docked_count": [
+      79,
+      144,
+      54.861111111111114
+    ],
+    "auto_engaged_count": [
+      68,
+      144,
+      47.22222222222222
+    ],
+    "average_charge_station_points_auto": 6.277777777777778,
+    "average_charge_station_points_teleop": 16.26388888888889,
+    "average_foul_score": 3.4791666666666665,
+    "average_link_points": 5.520833333333333,
+    "average_mobility_points": 4.083333333333333,
+    "average_park_points": 1.3611111111111112,
+    "average_piece_points_auto": 6.861111111111111,
+    "average_piece_points_teleop": 21.395833333333332,
+    "average_points_auto": 17.22222222222222,
+    "average_points_teleop": 39.020833333333336,
+    "average_score": 65.24305555555556,
+    "average_win_margin": 32.68055555555556,
+    "average_win_score": 81.58333333333333,
+    "coopertition": [
+      67,
+      144,
+      46.52777777777778
+    ],
+    "high_score": [
+      134,
+      "2023mdbet_qm67",
+      "Q67"
+    ],
+    "mobility_count": [
+      196,
+      432,
+      45.370370370370374
+    ],
+    "sustainability_bonus_rp": [
+      2,
+      144,
+      1.3888888888888888
+    ],
+    "unicorn_matches": [
+      2,
+      144,
+      1.3888888888888888
+    ]
+  }
+}

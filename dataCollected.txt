@@ -1,0 +1,23 @@
+Insights.json
+    Average teliop and auto charge station points
+    Average link points
+    Average points auto
+    Average points teliop
+    Average score
+Ranking.json
+    Rank
+    Record
+    Ranking score
+    OPR
+    Avg match
+    Average charge station 
+    Average auto
+Match.json
+    Alliance breakdown
+    Winning alliance
+    Auto charge station status
+    Alliance score breakdown(different levels)
+OPR.json
+    OPR
+    DPR
+    CCWM
