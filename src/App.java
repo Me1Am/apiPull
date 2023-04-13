@@ -1,73 +1,103 @@
-import com.google.gson.Gson;
+/*Gson*/
 import java.io.Reader;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.net.HttpURLConnection;
+import com.google.gson.Gson;
+
+/*API Pull and Save*/
 import java.util.*;
+import java.net.URL;
 import java.io.FileWriter;
 import java.io.IOException;
-
+import java.net.HttpURLConnection;
 
 public class App {
-    public static String ranking = "https://www.thebluealliance.com/api/v3/event/2023mdbet/rankings";
-    public static String insights = "https://www.thebluealliance.com/api/v3/event/2023mdbet/insights";
-    public static String eventOPR = "https://www.thebluealliance.com/api/v3/event/2023mdbet/oprs";
-    public static String matches = "https://www.thebluealliance.com/api/v3/event/2023mdbet/matches";
+    /*API Pull*/
+    static String inline = "";
+    static int responseCode;       
+    static String[] urlNames = {"ranking", "matches"};
+    static String[] urls = {"https://www.thebluealliance.com/api/v3/event/2023mdbet/rankings", 
+                                "https://www.thebluealliance.com/api/v3/event/2023mdbet/matches"};
+                            
+    static URL url;
+    static Scanner sc;
+    static String failedPulls;
+    static HttpURLConnection conn;
+    
+    /*Gson Parser*/
+    static Gson gson;
+    static Reader reader;
+
+    static Map<?, ?> map;
 
     public static void main(String[] args) throws Exception {
-        pullAPI("Ranking", ranking);
-        pullAPI("Insight", insights);
-        pullAPI("OPR", eventOPR);
-        pullAPI("Match", matches);
-
-        /*Parse*/
-        /*JSON parser setup
-        try {
-            Gson gson = new Gson();
-            Reader reader = Files.newBufferedReader(Paths.get("test.json"));    //Create a reader
-            Map<?, ?> map = gson.fromJson(reader, Map.class);   //Convert json to map
-            
-            for (Map.Entry<?, ?> entry : map.entrySet()) {
-                System.out.println(entry.getKey() + "=" + entry.getValue() + "\n");    //Print the map entries
-            }
-
-            reader.close();
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-
-        }*/
-
-    
+        pull(); //Pull
         
     }
-    static void pullAPI(String name, String endpoint) throws Exception {
+    
+    static void apiPull(String name, String endpoint) throws Exception {
         /*Setup*/
-        URL url = new URL(endpoint); 
-        HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+        url = new URL(endpoint);
+        conn = (HttpURLConnection)url.openConnection();
         conn.setRequestMethod("GET");   //Command
         conn.setRequestProperty("X-TBA-Auth-Key", "3cXAtKkiWqBmhkl2dSqNQm4scotKMTSTHkzWH2g93GahrlHYvRq1rqfggAHmWGit");  //Header
-        conn.connect(); //Connect
-        int responsecode = conn.getResponseCode();  //Get server response code
-        String inline = "";        
+        conn.connect();
+        responseCode = conn.getResponseCode();
 
         /*Pull*/
-        if(responsecode != 200) {    //If response code isn't 200(success), then run
-            throw new RuntimeException("HttpResponseCode: " +responsecode);
-
+        if(responseCode != 200) {    //If response code isn't 200(success)
+            throw new RuntimeException("HttpResponseCode: " + responseCode);
         }   
         else {
-            Scanner sc = new Scanner(url.openStream());
+            sc = new Scanner(url.openStream());
             while(sc.hasNext()) {
                 inline += sc.nextLine();
                 inline += "\n";
             }
             sc.close();
         }
+        saveToFile(name);
 
-        /*Save to File*/
-        try (FileWriter fullPull = new FileWriter(name+".json")) {
+    }
+
+    static void pull() throws Exception {
+        failedPulls = "";
+
+        for (int i = 0; i <= urlNames.length; i++){
+            try {
+                apiPull(urlNames[i], urls[i]);
+            } catch(RuntimeException | IOException e) {
+                System.out.println("Failed with: " + e + "\nTrying again");
+                try {
+                    apiPull(urlNames[i], urls[i]);
+                } catch(RuntimeException | IOException f) {
+                    System.out.println("Failed with: " + f + "\nAborting");
+                    failedPulls.concat("\n" + urlNames[i]);    //Add failed pull to list
+                }
+            }
+        }
+        System.out.println("Failed pulls: " + failedPulls);
+
+    }
+
+    static void parse() throws Exception {
+        /*Parser Ssetup*/
+        try {
+            gson = new Gson();
+            reader = Files.newBufferedReader(Paths.get("test.json"));    //Create a reader
+            map = gson.fromJson(reader, Map.class);   //Convert json to map
+    
+            for (Map.Entry<?, ?> entry : map.entrySet()) {
+                System.out.println(entry.getKey() + "=" + entry.getValue() + "\n");    //Print the map entries
+            }
+            reader.close();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    static void saveToFile(String name) {
+        try (FileWriter fullPull = new FileWriter(name + ".json")) {
             fullPull.write(inline);
             fullPull.flush();
             System.out.println("Saved Full " + name + " Pull Successfully");
@@ -75,7 +105,7 @@ public class App {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        
     }
 
 }
