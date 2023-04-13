@@ -17,7 +17,7 @@ public class App {
     static int responseCode;       
     static String[] urlNames = {"ranking", "matches"};
     static String[] urls = {"https://www.thebluealliance.com/api/v3/event/2023mdbet/rankings", 
-                                "https://www.thebluealliance.com/api/v3/event/2023mdbet/matches"};
+                            "https://www.thebluealliance.com/api/v3/event/2023mdbet/matches"};
                             
     static URL url;
     static Scanner sc;
@@ -66,13 +66,17 @@ public class App {
         for (int i = 0; i <= urlNames.length; i++){
             try {
                 apiPull(urlNames[i], urls[i]);
+                Thread.sleep(1000);
             } catch(RuntimeException | IOException e) {
                 System.out.println("Failed with: " + e + "\nTrying again");
+                Thread.sleep(1000);
                 try {
                     apiPull(urlNames[i], urls[i]);
+                    Thread.sleep(1000);
                 } catch(RuntimeException | IOException f) {
                     System.out.println("Failed with: " + f + "\nAborting");
                     failedPulls.concat("\n" + urlNames[i]);    //Add failed pull to list
+                    Thread.sleep(1000);
                 }
             }
         }
