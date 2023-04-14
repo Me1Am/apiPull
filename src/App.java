@@ -19,9 +19,10 @@ public class App {
     /*API Pull*/
     static String inline = "";
     static int responseCode;       
-    static String[] urlNames = {"ranking", "matches"};
+    static String[] urlNames = {"ranking", "matches", "opr"};
     static String[] urls = {"https://www.thebluealliance.com/api/v3/event/2023mdbet/rankings", 
-                            "https://www.thebluealliance.com/api/v3/event/2023mdbet/matches"};
+                            "https://www.thebluealliance.com/api/v3/event/2023mdbet/matches",
+                            "https://www.thebluealliance.com/api/v3/event/2023mdbet/oprs"};
     
     static HttpClient client;
     static HttpRequest request;
@@ -30,7 +31,6 @@ public class App {
     /*Gson Parser*/
     static Gson gson;
     static Reader reader;
-
     static Map<?, ?> map;
 
     public static void main(String[] args) throws Exception {

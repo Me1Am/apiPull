@@ -8,18 +8,13 @@ Ranking.json
     Per Team:
     Record
     Ranking score
-    
-Match.json
-    Total Event Averages:
-        Teliop and auto charge station points
-        Link points
-        Points auto
-        Points teliop
-        Score
+
+OPR.json
     Per Team:
         OPR
         DPR
         CCWM
+Match.json
     All Event Matches:
         Per Match:
             Alliance teams
