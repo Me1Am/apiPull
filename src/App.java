@@ -4,12 +4,16 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import com.google.gson.Gson;
 
-/*API Pull and Save*/
+/*Save*/
 import java.util.*;
-import java.net.URL;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.net.HttpURLConnection;
+
+/*Http Client*/
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.net.URI;
 
 public class App {
     /*API Pull*/
@@ -18,11 +22,10 @@ public class App {
     static String[] urlNames = {"ranking", "matches"};
     static String[] urls = {"https://www.thebluealliance.com/api/v3/event/2023mdbet/rankings", 
                             "https://www.thebluealliance.com/api/v3/event/2023mdbet/matches"};
-                            
-    static URL url;
-    static Scanner sc;
-    static String failedPulls;
-    static HttpURLConnection conn;
+    
+    static HttpClient client;
+    static HttpRequest request;
+    static HttpResponse response;
     
     /*Gson Parser*/
     static Gson gson;
@@ -32,38 +35,28 @@ public class App {
 
     public static void main(String[] args) throws Exception {
         pull(); //Pull
-        
+
     }
     
     static void apiPull(String name, String endpoint) throws Exception {
-        /*Setup*/
-        url = new URL(endpoint);
-        conn = (HttpURLConnection)url.openConnection();
-        conn.setRequestMethod("GET");   //Command
-        conn.setRequestProperty("X-TBA-Auth-Key", "3cXAtKkiWqBmhkl2dSqNQm4scotKMTSTHkzWH2g93GahrlHYvRq1rqfggAHmWGit");  //Header
-        conn.connect();
-        responseCode = conn.getResponseCode();
-
+        /*Http Client Setup*/
+        client = HttpClient.newHttpClient();
+        request =   HttpRequest.newBuilder(URI.create(endpoint)).header("X-TBA-Auth-Key", "3cXAtKkiWqBmhkl2dSqNQm4scotKMTSTHkzWH2g93GahrlHYvRq1rqfggAHmWGit").build();
+        response = client.send(request, HttpResponse.BodyHandlers.ofString());
+    
         /*Pull*/
-        if(responseCode != 200) {    //If response code isn't 200(success)
-            throw new RuntimeException("HttpResponseCode: " + responseCode);
+        if(response.statusCode() != 200) {    //If response code isn't 200(success)
+            throw new RuntimeException("HttpResponseCode: " + response.statusCode());
         }   
         else {
-            sc = new Scanner(url.openStream());
-            while(sc.hasNext()) {
-                inline += sc.nextLine();
-                inline += "\n";
-            }
-            sc.close();
+            saveToFile(name);
+
         }
-        saveToFile(name);
 
     }
 
     static void pull() throws Exception {
-        failedPulls = "";
-
-        for (int i = 0; i <= urlNames.length; i++){
+        for (int i = 0; i < urlNames.length; i++){
             try {
                 apiPull(urlNames[i], urls[i]);
                 Thread.sleep(1000);
@@ -75,12 +68,10 @@ public class App {
                     Thread.sleep(1000);
                 } catch(RuntimeException | IOException f) {
                     System.out.println("Failed with: " + f + "\nAborting");
-                    failedPulls.concat("\n" + urlNames[i]);    //Add failed pull to list
                     Thread.sleep(1000);
                 }
             }
         }
-        System.out.println("Failed pulls: " + failedPulls);
 
     }
 
@@ -102,7 +93,7 @@ public class App {
 
     static void saveToFile(String name) {
         try (FileWriter fullPull = new FileWriter(name + ".json")) {
-            fullPull.write(inline);
+            fullPull.write(response.body().toString());
             fullPull.flush();
             System.out.println("Saved Full " + name + " Pull Successfully");
         
