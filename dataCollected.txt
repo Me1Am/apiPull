@@ -6,9 +6,15 @@ Ranking.json
         Average charge station
         Average auto
     Per Team:
-    Record
-    Ranking score
+        Record
+        Even Rank
+        Ranking points
+        Avg match score
+        Avg charge station points
+        Avg auto points
 
+        Auto docked
+        Teliop docked
 OPR.json
     Per Team:
         OPR
