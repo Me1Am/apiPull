@@ -1,28 +1,8 @@
 import java.util.List;
 
+
 class Ranking {
-    List<Rankings> rankings;
+    List<Rankings> rankings;  //Object List of Team Ranks
+    List<SortOrderInfo> sort_order_info; //Object List of the Sort Order
     
 }
-
-
-/*{
-  "name": "mkyong",     STRING
-  "age": 35,            INT
-  "position": [         STRING[]
-    "Founder",
-    "CTO",
-    "Writer"
-  ],
-  "skills": [           LIST<STRING>
-    "java",
-    "python",
-    "node",
-    "kotlin"
-  ],
-  "salary": {           MAP<STRING, INT>
-    "2018": 14000,
-    "2012": 12000,
-    "2010": 10000
-  }
-} */

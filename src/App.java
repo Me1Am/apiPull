@@ -167,21 +167,35 @@ public class App {
         
         try (Reader readers = new FileReader("ranking.json")) {
             Ranking ranking = gson.fromJson(readers, Ranking.class);
-
             String output = "";
-            for (Object object : ranking.rankings) {
-                for (Field field : object.getClass().getDeclaredFields()) {
-                    field.setAccessible(true);
-                    String name = field.getName();
-                    Object value = field.get(object);
-                    output += name + ": " + value + "\n";
-                }
+
+            for (Object team : ranking.rankings) {  //Get rankings field data
+                output += returnFields(team);
+            }
+            output += "\nSort Order Key:\n";
+            for (Object sortInfo : ranking.sort_order_info) {   //Get sort order info data
+                output += returnFields(sortInfo);
             }
             System.out.println(output);
         } catch (IOException e ) {
             e.printStackTrace();
         }
     
+    }
+
+    static String returnFields(Object object) {
+        String output = "";
+        try {
+            for (Field field : object.getClass().getDeclaredFields()) {
+                field.setAccessible(true);
+                String name = field.getName();
+                Object value = field.get(object);
+                output += name + ": " + value + "\n";
+            }
+        } catch (IllegalAccessException e) {
+            System.out.println(e);
+        }
+        return output;
     }
 
 }
