@@ -5,18 +5,22 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 /*Gson*/
+import java.util.Map;
+import java.util.List;
 import java.io.Reader;
+import java.util.Arrays;
+import java.io.FileReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 /*Save*/
-import java.util.*;
-import java.io.DataInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 
+/*Other*/
+import java.lang.reflect.Field;
 
 public class App {
     /*API Pull*/
@@ -28,7 +32,7 @@ public class App {
                             "https://www.thebluealliance.com/api/v3/event/2023mdbet/oprs"};
     
     static String[] oprDataNames = {"oprs"};
-    static String[] rankingDataNames = {"rankings"};
+    static String[] rankingDataNames = {"rank", "sort_orders"};
     static String[] matchesDataNames = {"alliances"};
 
 
@@ -44,7 +48,7 @@ public class App {
     public static void main(String[] args) throws Exception {
         pull(); //Pull Data
         //parse();    //Parse Data
-        testParse();
+        getRankingData();
     }
     
     static void getData(String name, String endpoint) throws Exception {
@@ -133,7 +137,6 @@ public class App {
         
     }
 
-
     static void testParse() throws Exception {
         /*Parser Ssetup*/
         gson = new GsonBuilder().setPrettyPrinting().create();
@@ -159,5 +162,26 @@ public class App {
 
     }
 
-}
+    static void getRankingData() throws IllegalArgumentException, IllegalAccessException {
+        gson = new Gson();
+        
+        try (Reader readers = new FileReader("ranking.json")) {
+            Ranking ranking = gson.fromJson(readers, Ranking.class);
 
+            String output = "";
+            for (Object object : ranking.rankings) {
+                for (Field field : object.getClass().getDeclaredFields()) {
+                    field.setAccessible(true);
+                    String name = field.getName();
+                    Object value = field.get(object);
+                    output += name + ": " + value + "\n";
+                }
+            }
+            System.out.println(output);
+        } catch (IOException e ) {
+            e.printStackTrace();
+        }
+    
+    }
+
+}
